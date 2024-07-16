@@ -38,21 +38,24 @@ const items = [
 const langs = [
   {
     code: "pt",
-    tag: "Português"
-  }, 
+    tag: "Português",
+  },
   {
     code: "en",
-    tag: "English"
-  }];
+    tag: "English",
+  },
+];
 
 export default function Home() {
   const [filteredItems, setFilteredItems] = useState(items); // na prática: filteredItems = items
-  const [filterLangs, setFilterLangs] = useState(langs.map(e => e.code)); // na prática: filterLangs = langs
+  const [filterLangs, setFilterLangs] = useState(langs.map((e) => e.code)); // na prática: filterLangs = langs
   const [showMenu, setShowMenu] = useState(true); // na prática: showMenu = true
 
   useEffect(() => {
     // toda vez que a variável filterLangs for alterada, executa esse bloco de código
-    setFilteredItems(items.filter((x) => showMenu && filterLangs.includes(x.lang))); 
+    setFilteredItems(
+      items.filter((x) => showMenu && filterLangs.includes(x.lang))
+    );
     // na prática: filteredItems = items.filter((x) => showMenu && filterLangs.includes(x.lang))
   }, [filterLangs, showMenu]);
 
@@ -70,7 +73,10 @@ export default function Home() {
   return (
     <main>
       <nav className="relative flex items-center flex-col w-full bg-slate-600 py-3 h-16">
-        <button className="absolute top-1/4 left-4 w-32 font-bold border-2" onClick={clickMenu}>
+        <button
+          className="absolute top-1/4 left-4 w-32 font-bold border-2"
+          onClick={clickMenu}
+        >
           {showMenu ? "Ver menu" : "Esconder menu"}
         </button>
         <h1 className="text-3xl font-bold">Objetos no quarto</h1>
@@ -87,7 +93,12 @@ export default function Home() {
                     <button
                       key={i}
                       onClick={() => clickLang(l.code)}
-                      className="mr-1 mt-1 bg-slate-500 py-1 px-2 rounded-sm border-2"
+                      className={
+                        "mr-1 mt-1 py-1 px-2 rounded-sm border-2 " +
+                        (filterLangs.includes(l.code)
+                          ? "bg-green-500"
+                          : " bg-slate-500")
+                      }
                     >
                       {l.tag}
                     </button>
@@ -99,12 +110,23 @@ export default function Home() {
         ) : (
           ""
         )}
-        <div className={"w-full h-[calc(100vh-4rem)] " + (showMenu ? "ml-[21.5%]" : "ml-[1.5%]")} >
+        <div
+          className={
+            "w-full h-[calc(100vh-4rem)] " +
+            (showMenu ? "ml-[21.5%]" : "ml-[1.5%]")
+          }
+        >
           <div className="grid grid-cols-3 gap-y-8 mt-5">
             {filteredItems.map((item) => {
               return (
-                <div key={item.id} className="w-[300px] h-[240px] rounded-lg p-3 bg-contain" style={{backgroundImage: `url('${item.path}')`}}>
-                  <p className="bg-gradient-to-r from-slate-500 to-transparent w-full px-3 py-[1px]">{item.name}</p>
+                <div
+                  key={item.id}
+                  className="w-[300px] h-[240px] rounded-lg p-3 bg-contain"
+                  style={{ backgroundImage: `url('${item.path}')` }}
+                >
+                  <p className="bg-gradient-to-r from-slate-500 to-transparent w-full px-3 py-[1px]">
+                    {item.name}
+                  </p>
                 </div>
               );
             })}
